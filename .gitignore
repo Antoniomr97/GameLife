@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.angular/
+.vite/
+venv/
+__pycache__/
+*.pyc
+.env
+.idea/
+.vscode/
+*.log

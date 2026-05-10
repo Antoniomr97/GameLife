@@ -1,0 +1,26 @@
+# ============================================================
+# GameLife Backend — Dependencias Python
+# Instalar con: pip install -r requirements.txt
+# ============================================================
+
+# Framework web
+fastapi==0.115.12
+uvicorn[standard]==0.34.2
+
+# ORM y base de datos
+sqlalchemy==2.0.40
+pymysql==1.1.1
+cryptography==44.0.3
+
+# Autenticación JWT
+python-jose[cryptography]==3.4.0
+passlib[bcrypt]==1.7.4
+bcrypt==3.2.2
+
+# Validación y configuración
+pydantic-settings==2.9.1
+python-dotenv==1.1.0
+python-multipart==0.0.20
+
+# Utilidades
+email-validator==2.2.0
