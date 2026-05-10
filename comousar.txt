@@ -1,0 +1,54 @@
+===================================================
+ GUÍA DE INICIO RÁPIDO: GAMELIFE
+===================================================
+Sigue estos pasos cada vez que quieras arrancar tu aplicación GameLife en tu ordenador. Necesitas abrir dos ventanas de terminal (como PowerShell o CMD).
+
+---------------------------------------------------
+ PASO 1: ARRANCAR EL SERVIDOR BACKEND (Python/FastAPI)
+---------------------------------------------------
+1. Abre una ventana de terminal.
+2. Navega a la carpeta del backend.
+   Ejemplo: cd C:\Users\Vermillion\Desktop\GameLife\backend
+3. Activa el entorno virtual. Dependiendo de tu terminal, escribe:
+   .\venv\Scripts\activate
+4. Inicia el servidor con Uvicorn:
+   uvicorn app.main:app --reload --port 8000
+
+Si lo has hecho bien, verás un mensaje que dice "Application startup complete" y el servidor se quedará ejecutándose en esa ventana. ¡No la cierres!
+
+---------------------------------------------------
+ PASO 2: ARRANCAR EL CLIENTE FRONTEND (Angular)
+---------------------------------------------------
+1. Abre OTRA ventana de terminal nueva (deja la del backend abierta).
+2. Navega a la carpeta del frontend.
+   Ejemplo: cd C:\Users\Vermillion\Desktop\GameLife\frontend
+3. Inicia el servidor de Angular:
+   npm run start
+   (O alternativamente: npx ng serve --port 4200)
+
+Espera unos segundos a que diga "Application bundle generation complete" y ponga "Local: http://localhost:4200/". Se quedará ejecutándose en esa ventana. ¡Tampoco la cierres!
+
+---------------------------------------------------
+ PASO 3: ABRIR LA APLICACIÓN
+---------------------------------------------------
+Una vez que ambos servidores estén ejecutándose (sin errores en sus respectivas ventanas), abre tu navegador de internet favorito (Chrome, Edge, Firefox, etc.) y visita la siguiente dirección:
+
+➡️ http://localhost:4200
+
+¡Y ya está! La aplicación GameLife cargará.
+
+---------------------------------------------------
+ 💡 CREDENCIALES IMPORTANTES
+---------------------------------------------------
+Para entrar como Administrador y gestionar todos los juegos, usa estas credenciales en el apartado de Iniciar sesión:
+
+• Usuario / Email: admin
+• Contraseña: ++GameLife++2026++
+
+---------------------------------------------------
+ ❌ CÓMO CERRAR LA APLICACIÓN
+---------------------------------------------------
+Cuando hayas terminado de usarla y quieras cerrarlo todo:
+1. Ve a la ventana de terminal del Backend y pulsa las teclas "Ctrl + C" a la vez. 
+2. Ve a la ventana de terminal del Frontend y pulsa las teclas "Ctrl + C" a la vez (si te pregunta "Terminar trabajo por lotes", escribe S y pulsa Enter).
+3. Ya puedes cerrar las dos ventanas con normalidad.
