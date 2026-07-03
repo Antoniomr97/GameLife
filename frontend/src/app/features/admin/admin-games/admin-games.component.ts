@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiService } from '../../../core/services/api.service';
@@ -8,12 +8,27 @@ import { Game } from '../../../shared/models/game.model';
   selector: 'app-admin-games',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
+  // FormsModule no es necesario: usamos (input) nativo con el signal
   template: `
     <div class="admin-container">
-      <header class="admin-header">
-        <h1>Panel de Administración: Juegos</h1>
+      <div class="games-toolbar">
+        <span class="section-label">Juegos registrados</span>
         <button class="btn-primary" (click)="openForm()">+ Añadir Juego</button>
-      </header>
+      </div>
+
+      <div class="search-bar">
+        <span class="search-icon">🔍</span>
+        <input
+          id="admin-game-search"
+          type="text"
+          placeholder="Buscar juego por nombre..."
+          [value]="searchQuery()"
+          (input)="searchQuery.set($any($event.target).value)"
+        />
+        @if (searchQuery()) {
+          <button class="clear-search" (click)="searchQuery.set('')" title="Limpiar búsqueda">✕</button>
+        }
+      </div>
 
       @if (loading()) {
         <div class="loading">Cargando juegos...</div>
@@ -30,7 +45,10 @@ import { Game } from '../../../shared/models/game.model';
               </tr>
             </thead>
             <tbody>
-              @for (game of games(); track game.id) {
+              @if (filteredGames().length === 0) {
+                <tr><td colspan="5" class="no-results">No se encontró ningún juego con "{{ searchQuery() }}".</td></tr>
+              }
+              @for (game of filteredGames(); track game.id) {
                 <tr>
                   <td>{{ game.id }}</td>
                   <td>{{ game.title }}</td>
@@ -99,13 +117,14 @@ import { Game } from '../../../shared/models/game.model';
   `,
   styles: [`
     .admin-container {
-      max-width: 1200px; margin: 0 auto; padding: 2rem;
+      max-width: 1200px; margin: 0 auto; padding: 0;
     }
-    .admin-header {
-      display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;
+    .games-toolbar {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 1.5rem;
     }
-    .admin-header h1 { font-size: 2rem; font-weight: 700; color: #fff; margin: 0; }
-    
+    .section-label { font-size: 1rem; color: #94a3b8; font-weight: 500; }
+
     .table-container {
       background: rgba(30, 41, 59, 0.5); border: 1px solid rgba(255,255,255,0.1);
       border-radius: 12px; overflow: hidden;
@@ -159,12 +178,46 @@ import { Game } from '../../../shared/models/game.model';
     
     .form-actions { display: flex; justify-content: flex-end; gap: 1rem; margin-top: 2rem; }
     .loading { text-align: center; padding: 4rem; color: #94a3b8; }
+
+    /* Search bar */
+    .search-bar {
+      position: relative; display: flex; align-items: center;
+      margin-bottom: 1.5rem;
+      background: rgba(30, 41, 59, 0.6);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px;
+      padding: 0 1rem;
+      transition: border-color 0.2s;
+    }
+    .search-bar:focus-within { border-color: #8b5cf6; }
+    .search-icon { font-size: 1rem; color: #64748b; margin-right: 0.75rem; pointer-events: none; }
+    .search-bar input {
+      flex: 1; background: transparent; border: none;
+      padding: 0.85rem 0; color: #f8fafc;
+      font-size: 1rem; font-family: inherit;
+    }
+    .search-bar input:focus { outline: none; }
+    .search-bar input::placeholder { color: #475569; }
+    .clear-search {
+      background: transparent; border: none; color: #64748b;
+      font-size: 1rem; cursor: pointer; padding: 0.25rem 0.5rem;
+      border-radius: 4px; transition: color 0.2s;
+    }
+    .clear-search:hover { color: #f87171; }
+    .no-results { text-align: center; padding: 2rem; color: #64748b; font-style: italic; }
   `]
 })
 export class AdminGamesComponent implements OnInit {
   games = signal<Game[]>([]);
   loading = signal(false);
-  
+  searchQuery = signal('');
+
+  filteredGames = computed(() => {
+    const query = this.searchQuery().toLowerCase().trim();
+    if (!query) return this.games();
+    return this.games().filter(g => g.title.toLowerCase().includes(query));
+  });
+
   showForm = signal(false);
   editingGame = signal<Game | null>(null);
   submitting = signal(false);

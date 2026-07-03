@@ -77,6 +77,14 @@ export class ApiService {
     return this.http.get<UserProfile>(`${this.apiUrl}/users/${id}`);
   }
 
+  getAdminUsers(): Observable<UserProfile[]> {
+    return this.http.get<UserProfile[]>(`${this.apiUrl}/users`);
+  }
+
+  deleteUser(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/users/${id}`);
+  }
+
   getUserReviews(userId: number): Observable<ReviewWithDetails[]> {
     return this.http.get<ReviewWithDetails[]>(`${this.apiUrl}/users/${userId}/reviews`);
   }

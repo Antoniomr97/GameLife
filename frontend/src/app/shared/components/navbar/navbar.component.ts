@@ -11,13 +11,13 @@ import { AuthService } from '../../../core/services/auth.service';
     <nav class="navbar">
       <div class="navbar-container">
         <a routerLink="/" class="navbar-brand">
-          <span class="brand-icon">🎮</span>
+          <img src="assets/gamelife-logo.png" alt="GameLife Logo" class="brand-logo" />
           <span class="brand-text">GameLife</span>
         </a>
 
         <div class="navbar-links">
           <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-            <span class="nav-icon">🏠</span> Dashboard
+            <span class="nav-icon">🎮</span> Games
           </a>
           @if (auth.isAuthenticated()) {
             <a routerLink="/feed" routerLinkActive="active">
@@ -73,7 +73,18 @@ import { AuthService } from '../../../core/services/auth.service';
       font-size: 1.4rem;
       font-weight: 700;
     }
-    .brand-icon { font-size: 1.6rem; }
+    .brand-logo {
+      height: 36px;
+      width: 36px;
+      object-fit: contain;
+      border-radius: 8px;
+      filter: drop-shadow(0 0 8px rgba(139, 92, 246, 0.6));
+      transition: transform 0.2s ease, filter 0.2s ease;
+    }
+    .navbar-brand:hover .brand-logo {
+      transform: scale(1.1) rotate(-5deg);
+      filter: drop-shadow(0 0 14px rgba(139, 92, 246, 0.9));
+    }
     .brand-text {
       background: linear-gradient(135deg, #8b5cf6, #06b6d4);
       -webkit-background-clip: text;
@@ -137,7 +148,7 @@ import { AuthService } from '../../../core/services/auth.service';
   `]
 })
 export class NavbarComponent {
-  constructor(public auth: AuthService) {}
+  constructor(public auth: AuthService) { }
 
   currentUserId() {
     return this.auth.currentUser()?.id ?? 0;

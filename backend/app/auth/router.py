@@ -9,6 +9,7 @@ from ..database import get_db
 from ..models import User
 from ..schemas import UserCreate, UserResponse, Token
 from .utils import hash_password, verify_password, create_access_token
+from .email_service import send_welcome_email
 
 router = APIRouter(prefix="/api/auth", tags=["Autenticación"])
 
@@ -25,6 +26,7 @@ def register(user_data: UserCreate, db: Session = Depends(get_db)):
     
     - Verifica que el email y username no estén en uso.
     - Hashea la contraseña con bcrypt.
+    - Envía un email de bienvenida en segundo plano.
     - Retorna los datos públicos del usuario creado.
     """
     # Verificar email duplicado
@@ -50,6 +52,9 @@ def register(user_data: UserCreate, db: Session = Depends(get_db)):
     db.add(new_user)
     db.commit()
     db.refresh(new_user)
+
+    # Enviar email de bienvenida en segundo plano (no bloquea la respuesta)
+    send_welcome_email(to_email=new_user.email, username=new_user.username)
 
     return new_user
 

@@ -21,6 +21,14 @@ class Settings(BaseSettings):
     # CORS
     FRONTEND_URL: str = "http://localhost:4200"
 
+    # Email (SMTP) — opcional, el envío se omite si no está configurado
+    SMTP_HOST: str = ""
+    SMTP_PORT: int = 587
+    SMTP_USER: str = ""
+    SMTP_PASSWORD: str = ""
+    SMTP_FROM_NAME: str = "GameLife"
+    SMTP_FROM_EMAIL: str = ""
+
     class Config:
         env_file = ".env"
         env_file_encoding = "utf-8"

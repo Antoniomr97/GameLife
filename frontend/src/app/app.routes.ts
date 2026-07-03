@@ -30,9 +30,22 @@ export const routes: Routes = [
   },
   {
     path: 'admin',
-    loadComponent: () => import('./features/admin/admin-games/admin-games.component').then(m => m.AdminGamesComponent),
+    loadComponent: () => import('./features/admin/admin-layout/admin-layout.component').then(m => m.AdminLayoutComponent),
     canActivate: [authGuard],
-    title: 'GameLife — Administración'
+    title: 'GameLife — Administración',
+    children: [
+      { path: '', redirectTo: 'games', pathMatch: 'full' },
+      {
+        path: 'games',
+        loadComponent: () => import('./features/admin/admin-games/admin-games.component').then(m => m.AdminGamesComponent),
+        title: 'GameLife — Admin: Juegos'
+      },
+      {
+        path: 'users',
+        loadComponent: () => import('./features/admin/admin-users/admin-users.component').then(m => m.AdminUsersComponent),
+        title: 'GameLife — Admin: Usuarios'
+      }
+    ]
   },
   {
     path: 'games/:id',
