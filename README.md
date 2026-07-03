@@ -284,7 +284,7 @@ cd frontend
 npm install
 
 # Arrancar en modo desarrollo
-ng serve
+npx ng serve
 ```
 
 Verifica en: **http://localhost:4200**
